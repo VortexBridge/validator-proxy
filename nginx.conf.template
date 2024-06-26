@@ -1,0 +1,46 @@
+worker_processes 1;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    # Send access and error logs to stdout and stderr instead of to disk
+    access_log /dev/stdout main;
+    error_log /dev/stderr;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    upstream validators {
+        ip_hash;
+        # UPSTREAM_SERVERS
+    }
+
+    server {
+        listen 80;
+
+        location ~* /(GetEthereumTransaction|GetKoinosTransaction) {
+            proxy_pass http://validators;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            limit_req zone=one burst=10 nodelay;
+        }
+
+        # Return 404 for any other request
+        location / {
+            return 404;
+        }
+    }
+
+    limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
+}

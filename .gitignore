@@ -1,0 +1,48 @@
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Linux thumbnail cache files
+*~
+
+# Ignore logs
+*.log
+logs/
+*.log.*
+
+# Ignore environment variables files
+.env
+.env.*
+
+# Ignore Docker files
+*.pid
+*pyc
+*.swp
+
+# Ignore Docker-specific files
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.iml
+
+# Ignore build directories and files
+dist/
+build/
+.cache/
+coverage/
+
+# Ignore Nginx logs
+var/log/nginx/*.log
+var/log/nginx/*access.log
+var/log/nginx/*error.log
+
+# Ignore Docker generated files
+*.pid
+.dockerignore
+
+# Ignore any temporary or secret files that you might have created
+secret/
+temp/
+tmp/
