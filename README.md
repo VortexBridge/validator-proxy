@@ -29,7 +29,7 @@ sudo chmod a+rw /etc/letsencrypt
 
 4) Clone and build the repo with docker
 ```
-git clone https://github.com/vortexbridge/validatory-proxy
+git clone https://github.com/VortexBridge/validator-proxy
 cd validator-proxy
 sudo docker build -t=validator-proxy:latest .
 ```
@@ -70,7 +70,7 @@ If you need to change the validators list you will need to stop and remove the c
 
 ```
 sudo docker stop validator-proxy
-sudo docker rm validatory-proxy
+sudo docker rm validator-proxy
 ```
 
 If you need to pull in changes from the repo and re-build, do this. If there are no changes, you can skip this.
