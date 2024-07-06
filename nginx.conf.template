@@ -43,7 +43,7 @@ http {
         server_name yourdomain.com;
 
         ssl_certificate /etc/letsencrypt/live/testcert.kollection.app/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/testcert.kollection.app/privkey.pem;
+        ssl_certificate_key /etc/letsencrypt/live/testcert.kollection.app/privkey.pem;
 
         location ~* /(GetEthereumTransaction|GetKoinosTransaction) {
             proxy_pass http://validators;
