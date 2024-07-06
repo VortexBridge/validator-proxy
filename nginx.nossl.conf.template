@@ -26,7 +26,8 @@ http {
 
         # serve files for certbot / letsencrypt renewal when needed
         location /.well-known/acme-challenge/ {
-            root /var/www/certbot;
+            alias /var/www/certbot;
+            default_type text/plain;
         }
     }
 
