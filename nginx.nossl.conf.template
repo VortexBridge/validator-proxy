@@ -1,0 +1,34 @@
+worker_processes 1;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    # Send access and error logs to stdout and stderr instead of to disk
+    access_log /dev/stdout main;
+    error_log /dev/stderr;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    # answer the certbot requests
+    server {
+        listen 80;
+        server_name testcert.kollection.app;
+
+        # serve files for certbot / letsencrypt renewal when needed
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+    }
+
+    limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
+}

@@ -21,13 +21,13 @@ By default, it will run on port 80 and 443 - you can map this to any other port 
 To run in production, simply use a command like this that runs the container daemonized and causing it to always restart even if the server is restarted:
 
 ```
-docker run -d --name validator-proxy --restart always -e VALIDATORS=127.0.0.1:3020,127.0.0.1:3021 -p 80:80 -p 443:443 validator-proxy:latest
+sudo docker run -d --name validator-proxy --restart always -e VALIDATORS=127.0.0.1:3020,127.0.0.1:3021 -p 80:80 -p 443:443 -v /etc/letsencrypt:/etc/letsencrypt -v /var/www/certbot:/var/www/certbot validator-proxy:latest
 ```
 
 And then to follow the logs:
 
 ```
-docker logs -f validator-proxy
+sudo docker logs -f validator-proxy
 ```
 
 ## Restarting / Updating
@@ -35,6 +35,11 @@ docker logs -f validator-proxy
 If you need to change the validators list you will need to stop and remove the container, and then re-run the original run command with the new validators list.
 
 ```
-docker stop validator-proxy
-docker rm validatory-proxy
+sudo docker stop validator-proxy
+sudo docker rm validatory-proxy
+```
+
+Start again:
+```
+sudo docker run -d --name validator-proxy --restart always -e VALIDATORS=127.0.0.1:3020,127.0.0.1:3021 -p 80:80 -p 443:443 -v /etc/letsencrypt:/etc/letsencrypt -v /var/www/certbot:/var/www/certbot validator-proxy:latest
 ```
