@@ -19,12 +19,7 @@ http {
     sendfile        on;
     keepalive_timeout  65;
 
-    upstream validators {
-        ip_hash;
-        # UPSTREAM_SERVERS
-    }
-
-    # Redirect all requests to https
+    # answer the certbot requests
     server {
         listen 80;
         server_name proxy.vortexbridge.io;
@@ -33,30 +28,6 @@ http {
         location /.well-known/acme-challenge/ {
             alias /var/www/certbot/.well-known/acme-challenge/;
             default_type text/plain;
-        }
-
-        return 301 https://$host$request_uri;
-    }
-
-    server {
-        listen 443 ssl;
-        server_name proxy.vortexbridge.io;
-
-        ssl_certificate /etc/letsencrypt/live/proxy.vortexbridge.io/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/proxy.vortexbridge.io/privkey.pem;
-
-        location ~* /(GetEthereumTransaction|GetKoinosTransaction) {
-            proxy_pass http://validators;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            limit_req zone=one burst=10 nodelay;
-        }
-
-        # Return 404 for any other request
-        location / {
-            return 404;
         }
     }
 
