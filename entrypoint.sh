@@ -12,7 +12,7 @@ for validator in $VALIDATORS_LIST; do
 done
 
 # if cert doesn't exist, use the nossl template so certbot can verify
-if [ ! -f /etc/letsencrypt/live/testcert.kollection.app/fullchain.pem ]; then
+if [ ! -f /etc/letsencrypt/live/proxy.vortexbridge.io/fullchain.pem ]; then
     echo "No SSL certificate found, using the nossl template for certbot verification"
     cp /etc/nginx/nginx.nossl.conf.template /etc/nginx/nginx.conf
 else

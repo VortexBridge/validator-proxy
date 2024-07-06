@@ -27,7 +27,7 @@ http {
     # Redirect all requests to https
     server {
         listen 80;
-        server_name testcert.kollection.app;
+        server_name proxy.vortexbridge.io;
 
         # serve files for certbot / letsencrypt renewal when needed
         location /.well-known/acme-challenge/ {
@@ -42,8 +42,8 @@ http {
         listen 443 ssl;
         server_name yourdomain.com;
 
-        ssl_certificate /etc/letsencrypt/live/testcert.kollection.app/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/testcert.kollection.app/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/proxy.vortexbridge.io/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/proxy.vortexbridge.io/privkey.pem;
 
         location ~* /(GetEthereumTransaction|GetKoinosTransaction) {
             proxy_pass http://validators;

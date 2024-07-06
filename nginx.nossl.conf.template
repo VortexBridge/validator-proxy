@@ -22,7 +22,7 @@ http {
     # answer the certbot requests
     server {
         listen 80;
-        server_name testcert.kollection.app;
+        server_name proxy.vortexbridge.io;
 
         # serve files for certbot / letsencrypt renewal when needed
         location /.well-known/acme-challenge/ {
