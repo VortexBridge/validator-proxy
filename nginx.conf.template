@@ -24,8 +24,25 @@ http {
         # UPSTREAM_SERVERS
     }
 
+    # Redirect all requests to https
     server {
         listen 80;
+        server_name testcert.kollection.app;
+
+        # serve files for certbot / letsencrypt renewal when needed
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        return 301 https://$host$request_uri;
+    }
+
+    server {
+        listen 443 ssl;
+        server_name yourdomain.com;
+
+        ssl_certificate /etc/letsencrypt/live/testcert.kollection.app/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/testcert.kollection.app/privkey.pem;
 
         location ~* /(GetEthereumTransaction|GetKoinosTransaction) {
             proxy_pass http://validators;
